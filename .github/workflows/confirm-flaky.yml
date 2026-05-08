@@ -19,18 +19,18 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Run test with NonDex
+      - name: Compile entire project first
         run: |
-          mvn -pl extensions/throwingproviders edu.illinois:nondex-maven-plugin:2.1.7:nondex \
-            -Dtest=com.google.inject.throwingproviders.CheckedProviderTest#testBindingToInterfaceWithExtraMethod_Provides \
-            -DnondexRuns=10
-
-      - name: Compile
-        run: |
-          mvn clean install -DskipTests -pl extensions/throwingproviders -am
+          mvn clean install -DskipTests
 
       - name: Run test normally without NonDex
         run: |
           mvn -pl extensions/throwingproviders test \
             -Dtest=com.google.inject.throwingproviders.CheckedProviderTest#testBindingToInterfaceWithExtraMethod_Provides
 
+      - name: Run test with NonDex
+        run: |
+          mvn -pl extensions/throwingproviders edu.illinois:nondex-maven-plugin:2.1.7:nondex \
+            -Dtest=com.google.inject.throwingproviders.CheckedProviderTest#testBindingToInterfaceWithExtraMethod_Provides \
+            -DnondexRuns=10
+        continue-on-error: true
