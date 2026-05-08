@@ -9,10 +9,10 @@ env:
 on:
   push:
     branches:
-      - master
+      - mastedd
   pull_request:
     branches:
-      - master
+      - masterd
 
 concurrency:
   # On main branch, we don't want any jobs cancelled so the sha is used to name the group
