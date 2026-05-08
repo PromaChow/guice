@@ -1,9 +1,7 @@
 name: Confirm Flaky Test
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   confirm-flaky:
@@ -17,17 +15,18 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '11'
+          distribution: 'temurin'
 
       - name: Compile
         run: |
           mvn clean install -DskipTests -pl extensions/throwingproviders -am
 
-      - name: Run test normally 
+      - name: Run test normally without NonDex
         run: |
           mvn -pl extensions/throwingproviders test \
             -Dtest=com.google.inject.throwingproviders.CheckedProviderTest#testBindingToInterfaceWithExtraMethod_Provides
 
-      - name: Run test with NonDex
+      - name: Run test with NonDex 
         run: |
           mvn -pl extensions/throwingproviders edu.illinois:nondex-maven-plugin:2.1.7:nondex \
             -Dtest=com.google.inject.throwingproviders.CheckedProviderTest#testBindingToInterfaceWithExtraMethod_Provides \
