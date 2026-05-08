@@ -1,6 +1,7 @@
 name: Confirm Flaky Test
 
 on:
+  push:
     branches:
       - master
 
